@@ -26,7 +26,7 @@ end
 
 case options[:show]
 when :modified
-  branches = `git for-each-ref --format="%(refname)" --sort='-authordate' 'refs/heads' | sed 's/refs\\/heads\\///' | head -#{options[:count]}`.split
+  branches = `git for-each-ref --format="%(refname:short)" --sort='-authordate' refs/heads --count #{options[:count]}`.split
 else
   branches = `git reflog | grep "checkout: moving" | cut -d' ' -f8 | uniq | head -#{options[:count] + 1}`.split.drop(1)
 end
