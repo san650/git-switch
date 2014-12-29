@@ -32,7 +32,8 @@ $ git clone https://github.com/san650/git-switch.git
 Link git-switch.rb to your `bin` directory
 
 ```sh
-$ ln -s git-switch.rb /usr/bin/git-switch
+$ cd git-switch
+$ ln -s $(pwd)/git-switch.rb /usr/bin/git-switch
 ```
 
 ## License
