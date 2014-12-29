@@ -18,6 +18,10 @@ begin
       options[:interactive] = true
     end
 
+    opts.on("-c", "--count number", Integer, "Show number of branches") do |number|
+      options[:count] = number
+    end
+
   end.parse!
 rescue OptionParser::InvalidOption => e
   puts e.to_s
