@@ -32,7 +32,7 @@ case options[:show]
 when :modified
   branches = `git for-each-ref --format="%(refname:short)" --sort='-authordate' refs/heads --count #{options[:count]}`.split
 else
-  branches = `git reflog | grep "checkout: moving" | cut -d' ' -f8 | uniq | head -#{options[:count] + 1}`.split.drop(1)
+  branches = `git reflog | grep "checkout: moving" | cut -d' ' -f8`.split.uniq.drop(1).take(options[:count])
 end
 
 exit if branches.count == 0
