@@ -10,7 +10,7 @@ git switch [<options>]
 
 ## Description
 
-List lastest used branches. By used we mean checked-out at some point.
+List latest used branches. By used we mean branches that were modified at some point.
 It also has an interactive mode which allows you to easily checkout one
 of the branches in the list.
 
@@ -18,9 +18,9 @@ of the branches in the list.
 
 | Option                | Description                     |
 |-----------------------|---------------------------------|
-| `-m` `--modified`     | Show recently modified branches. By default it lists by checkout history. |
-| `-i` `--interactive`  | Use interactive mode            |
-| `-c` `--count number` | Show number of branches         |
+| `-o` `--checked-out`   | Show recently checked out branches. By default it lists by branch's modified date. |
+| `-i` `--no-interactive` | Don't use interactive mode. Interactive by default. |
+| `-c` `--count number`   | Show number of branches. |
 
 ## Installation
 

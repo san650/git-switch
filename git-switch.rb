@@ -2,20 +2,22 @@
 require "optparse"
 
 branches = nil
-options = {}
-options[:count] = 9
-options[:show] = :checkout
+options = {
+  :count       => 9,
+  :show        => :modified,
+  :interactive => true
+}
 
 begin
   OptionParser.new do |opts|
     opts.banner = "Usage: git switch [options]"
 
-    opts.on("-m", "--modified", "Show recently modified branches") do
-      options[:show] = :modified
+    opts.on("-o", "--checked-out", "Show recently checked out branches") do
+      options[:show] = :checkout
     end
 
-    opts.on("-i", "--interactive", "Use interactive mode") do
-      options[:interactive] = true
+    opts.on("-i", "--non-interactive", "Don't use interactive mode") do
+      options[:interactive] = false
     end
 
     opts.on("-c", "--count number", Integer, "Show number of branches") do |number|
