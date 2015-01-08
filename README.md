@@ -18,7 +18,7 @@ of the branches in the list.
 
 | Option                | Description                     |
 |-----------------------|---------------------------------|
-| `-m` `--modified`     | Show recently modified branches |
+| `-m` `--modified`     | Show recently modified branches. By default it lists by checkout history. |
 | `-i` `--interactive`  | Use interactive mode            |
 | `-c` `--count number` | Show number of branches         |
 
