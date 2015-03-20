@@ -8,6 +8,12 @@ options = {
   :interactive => true
 }
 
+# Treat `git switch -` as an alias of `git checkout -`
+if ARGV == ["-"]
+  `git checkout -`
+  exit
+end
+
 begin
   OptionParser.new do |opts|
     opts.banner = "Usage: git switch [options]"
