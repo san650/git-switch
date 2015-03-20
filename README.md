@@ -16,11 +16,11 @@ of the branches in the list.
 
 ## Options
 
-| Option                | Description                     |
-|-----------------------|---------------------------------|
-| `-o` `--checked-out`   | Show recently checked out branches. By default it lists by branch's modified date. |
+| Option                  | Description                     |
+|-------------------------|---------------------------------|
+| `-o` `--checked-out`    | Show recently checked out branches. By default it lists by branch's modified date. |
 | `-i` `--no-interactive` | Don't use interactive mode. Interactive by default. |
-| `-c` `--count number`   | Show number of branches. |
+| `-c` `--count <number>` | Show number of branches. |
 
 ## Installation
 
