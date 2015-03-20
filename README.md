@@ -39,12 +39,12 @@ $ ln -s $(pwd)/git-switch.rb /usr/bin/git-switch
 
 ## Contributors
 
-* Marcelo Dominguez (@marpo60)
-* Santiago Ferreira (@san650)
-* Daniel Gomez de Souza (@eldano)
+* Marcelo Dominguez ([@marpo60](http://github.com/marpo60))
+* Santiago Ferreira ([@san650](http://github.com/san650))
+* Daniel Gomez de Souza ([@eldano](http://github.com/eldano))
 
 ## License
 
 git-switch is licensed under the MIT license.
 
-See LICENSE for the full license text.
+See [LICENSE](https://raw.githubusercontent.com/san650/git-switch/master/LICENSE) for the full license text.
