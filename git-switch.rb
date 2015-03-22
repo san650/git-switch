@@ -23,7 +23,6 @@ begin
     opts.on("-c", "--count <number>", Integer, "Show number of branches") do |number|
       options[:count] = number
     end
-
   end.parse!
 rescue OptionParser::InvalidOption => e
   puts e.to_s
@@ -34,7 +33,12 @@ case options[:show]
 when :modified
   branches = `git for-each-ref --format="%(refname:short)" --sort='-authordate' refs/heads --count #{options[:count]}`.split
 else
-  branches = `git reflog | grep "checkout: moving" | cut -d' ' -f8`.split.uniq.drop(1).take(options[:count])
+  branches = `git reflog | grep "checkout: moving" | cut -d' ' -f8`.split.uniq.drop(1)
+
+  # Remove deleted branches from the result set
+  branches &= `git branch`.split
+
+  branches = branches.take(options[:count])
 end
 
 exit if branches.count == 0
