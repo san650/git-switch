@@ -8,6 +8,14 @@ List latests used branches
 git switch [<options>]
 ```
 
+or
+
+```
+git switch -
+```
+
+to checkout previous branch
+
 ## Description
 
 List latest used branches. By used we mean branches that were modified at some point.
