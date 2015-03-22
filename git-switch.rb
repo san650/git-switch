@@ -1,6 +1,12 @@
 #!/usr/bin/env ruby
 require "optparse"
 
+# Treat `git switch -` as an alias of `git checkout -`
+if ARGV == ["-"]
+  `git checkout -`
+  exit
+end
+
 branches = nil
 options = {
   :count       => 9,
@@ -8,10 +14,9 @@ options = {
   :interactive => true
 }
 
-# Treat `git switch -` as an alias of `git checkout -`
-if ARGV == ["-"]
-  `git checkout -`
-  exit
+# Read default configuration options
+if `git config --get switch.order`.chomp == "checked-out"
+  options[:show] = :checkout
 end
 
 begin
