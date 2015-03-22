@@ -27,6 +27,10 @@ begin
       options[:show] = :checkout
     end
 
+    opts.on("-m", "--modified", "Show last modified branches") do
+      options[:show] = :modified
+    end
+
     opts.on("-i", "--non-interactive", "Don't use interactive mode") do
       options[:interactive] = false
     end
