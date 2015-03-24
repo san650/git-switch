@@ -1,6 +1,12 @@
 #!/usr/bin/env ruby
 require "optparse"
 
+# Treat `git switch -` as an alias of `git checkout -`
+if ARGV == ["-"]
+  `git checkout -`
+  exit
+end
+
 branches = nil
 options = {
   :count       => 9,
@@ -8,10 +14,9 @@ options = {
   :interactive => true
 }
 
-# Treat `git switch -` as an alias of `git checkout -`
-if ARGV == ["-"]
-  `git checkout -`
-  exit
+# Read default configuration options
+if `git config --get switch.order`.chomp == "checked-out"
+  options[:show] = :checkout
 end
 
 begin
@@ -20,6 +25,10 @@ begin
 
     opts.on("-o", "--checked-out", "Show recently checked out branches") do
       options[:show] = :checkout
+    end
+
+    opts.on("-m", "--modified", "Show last modified branches") do
+      options[:show] = :modified
     end
 
     opts.on("-i", "--non-interactive", "Don't use interactive mode") do

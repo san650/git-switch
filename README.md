@@ -27,8 +27,17 @@ of the branches in the list.
 | Option                  | Description                     |
 |-------------------------|---------------------------------|
 | `-o` `--checked-out`    | Show recently checked out branches. By default it lists by branch's modified date. |
+| `-m` `--modified`       | Show last modified branches |
 | `-i` `--no-interactive` | Don't use interactive mode. Interactive by default. |
 | `-c` `--count <number>` | Show number of branches. |
+
+## Configurations
+
+You can configure git switch to do "checked-out" order by default
+
+```
+git config --add switch.order checked-out
+```
 
 ## Installation
 
