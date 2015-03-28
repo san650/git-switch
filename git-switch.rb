@@ -52,7 +52,11 @@ case options[:show]
 when :modified
   branches = `git for-each-ref --format="%(refname:short)" --sort='-authordate' refs/heads --count #{options[:count] + 1}`.split
   current_branch = `git rev-parse --abbrev-ref HEAD`.chomp
-  branches.delete(current_branch)
+  if branches.include?(current_branch)
+    branches.delete(current_branch)
+  else
+    branches = branches.first(options[:count])
+  end
 else
   branches = `git reflog | grep "checkout: moving" | cut -d' ' -f8`.split.uniq.drop(1)
 
