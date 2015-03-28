@@ -54,6 +54,20 @@ $ cd git-switch
 $ ln -s $(pwd)/git-switch.rb /usr/bin/git-switch
 ```
 
+## Tests
+
+Ruby 1.8.7
+
+```sh
+$ ruby -rubygems tests/acceptance.rb
+```
+
+Ruby 1.9+
+
+```sh
+$ ruby tests/acceptance.rb
+```
+
 ## Contributors
 
 * Marcelo Dominguez ([@marpo60](http://github.com/marpo60))
