@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Use tmp folder for git database
-TMP=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/tmp
+TMP=$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )/tmp/fixture
 
 # Recreate tmp folder
 rm -rf "$TMP"

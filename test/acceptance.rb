@@ -1,19 +1,21 @@
 gem "minitest"
 require "minitest/autorun"
 
-def generate_fixture
-  `#{File.join(File.expand_path(File.dirname(__FILE__)), "fixture.sh")}`
-end
+module TestHelpers
+  BASE_PATH = File.expand_path(File.dirname(__FILE__))
+  GIT_DIR = File.join(BASE_PATH, "..", "tmp", "fixture", ".git")
 
-def git_switch(*arguments)
-  git_fixture = File.join(File.expand_path(File.dirname(__FILE__)), "tmp", ".git")
-  output = nil
-  command = ["git", "--git-dir=#{git_fixture}", "switch"]
-  command |= arguments
+  def generate_fixture
+    `#{File.join(BASE_PATH, "fixture.sh")}`
+  end
 
-  IO.popen(command.join(" "), "r+") do |io|
-    io.puts "q"
-    io.read
+  def git_switch(*arguments)
+    command = ["git", "--git-dir=#{GIT_DIR}", "switch"] | arguments
+
+    IO.popen(command.join(" "), "r+") do |io|
+      io.puts "q"
+      io.read
+    end
   end
 end
 
@@ -24,6 +26,8 @@ class String
 end
 
 describe "git-switch" do
+  include TestHelpers
+
   before do
     generate_fixture
   end
