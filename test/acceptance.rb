@@ -5,7 +5,7 @@ def generate_fixture
   `#{File.join(File.expand_path(File.dirname(__FILE__)), "fixture.sh")}`
 end
 
-def execute_command(*arguments)
+def git_switch(*arguments)
   git_fixture = File.join(File.expand_path(File.dirname(__FILE__)), "tmp", ".git")
   output = nil
   command = ["git", "--git-dir=#{git_fixture}", "switch"]
@@ -29,7 +29,7 @@ describe "git-switch" do
   end
 
   it "lists branches order by modified date" do
-    execute_command("--modified").must_equal <<-EOT.fix
+    git_switch("--modified").must_equal <<-EOT.fix
       1. feature_one
       2. feature_three
       3. feature_two
@@ -38,7 +38,7 @@ describe "git-switch" do
   end
 
   it "lists branches order by modified date using short argument" do
-    execute_command("-m").must_equal <<-EOT.fix
+    git_switch("-m").must_equal <<-EOT.fix
       1. feature_one
       2. feature_three
       3. feature_two
@@ -47,7 +47,7 @@ describe "git-switch" do
   end
 
   it "lists branches order by checked out date" do
-    execute_command("--checked-out").must_equal <<-EOT.fix
+    git_switch("--checked-out").must_equal <<-EOT.fix
       1. feature_two
       2. feature_three
       3. feature_one
@@ -56,7 +56,7 @@ describe "git-switch" do
   end
 
   it "lists branches order by checked out date using short argument" do
-    execute_command("-o").must_equal <<-EOT.fix
+    git_switch("-o").must_equal <<-EOT.fix
       1. feature_two
       2. feature_three
       3. feature_one
@@ -65,7 +65,7 @@ describe "git-switch" do
   end
 
   it "limits the number of branches to show" do
-    execute_command("--count 2").must_equal <<-EOT.fix
+    git_switch("--count 2").must_equal <<-EOT.fix
       1. feature_one
       2. feature_three
       Select a branch (1-2,q)
@@ -73,7 +73,7 @@ describe "git-switch" do
   end
 
   it "limits the number of branches to show using short argument" do
-    execute_command("-c 2").must_equal <<-EOT.fix
+    git_switch("-c 2").must_equal <<-EOT.fix
       1. feature_one
       2. feature_three
       Select a branch (1-2,q)
