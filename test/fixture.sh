@@ -21,3 +21,7 @@ git checkout -b feature_three 2> /dev/null
 git commit -m "Dummy" --allow-empty
 git checkout feature_two 2> /dev/null
 git checkout master 2> /dev/null
+
+# Create base configuration
+git config --local --add switch.count 9
+git config --local --add switch.order modified
