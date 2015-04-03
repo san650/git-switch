@@ -19,6 +19,10 @@ if `git config --get switch.order`.chomp == "checked-out"
   options[:show] = :checkout
 end
 
+if (count = `git config --get switch.count`.chomp.to_i) > 0
+  options[:count] = count
+end
+
 begin
   OptionParser.new do |opts|
     opts.banner = "Usage: git switch [options]"
