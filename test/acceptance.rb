@@ -174,9 +174,13 @@ describe "git-switch" do
     current_branch.must_equal("feature_two")
   end
 
-  it "yells about invalid options" do
+  it "yells about invalid options when switching branch" do
     change_branch(4).must_match("Invalid option '4'")
     change_branch(0).must_match("Invalid option '0'")
     change_branch("r").must_match("Invalid option 'r'")
+  end
+
+  it "yells about invalid options when invoking the command" do
+    git_switch("--invalid-option").chomp.must_equal("invalid option: --invalid-option")
   end
 end
