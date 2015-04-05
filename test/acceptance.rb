@@ -3,7 +3,8 @@ require "minitest/autorun"
 
 module TestHelpers
   BASE_PATH = File.expand_path(File.dirname(__FILE__))
-  GIT_DIR = File.join(BASE_PATH, "..", "tmp", "fixture", ".git")
+  FIXTURE_PATH = File.join(BASE_PATH, "..", "tmp", "fixture")
+  GIT_DIR = File.join(FIXTURE_PATH, ".git")
 
   def generate_fixture
     `#{File.join(BASE_PATH, "fixture.sh")}`
@@ -34,18 +35,18 @@ describe "git-switch" do
 
   it "lists branches order by modified date" do
     git_switch("--modified").must_equal <<-EOT.fix
-      1. feature_one
-      2. feature_three
-      3. feature_two
+      1. feature_three
+      2. feature_two
+      3. feature_one
       Select a branch (1-3,q)
     EOT
   end
 
   it "lists branches order by modified date using short argument" do
     git_switch("-m").must_equal <<-EOT.fix
-      1. feature_one
-      2. feature_three
-      3. feature_two
+      1. feature_three
+      2. feature_two
+      3. feature_one
       Select a branch (1-3,q)
     EOT
   end
@@ -70,17 +71,25 @@ describe "git-switch" do
 
   it "limits the number of branches to show" do
     git_switch("--count 2").must_equal <<-EOT.fix
-      1. feature_one
-      2. feature_three
+      1. feature_three
+      2. feature_two
       Select a branch (1-2,q)
     EOT
   end
 
   it "limits the number of branches to show using short argument" do
     git_switch("-c 2").must_equal <<-EOT.fix
-      1. feature_one
-      2. feature_three
+      1. feature_three
+      2. feature_two
       Select a branch (1-2,q)
+    EOT
+  end
+
+  it "lists branches and exit" do
+    git_switch("--non-interactive").must_equal <<-EOT.trim
+      feature_three
+      feature_two
+      feature_one
     EOT
   end
 end
