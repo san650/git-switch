@@ -1,12 +1,6 @@
 #!/usr/bin/env ruby
 require "optparse"
 
-# Treat `git switch -` as an alias of `git checkout -`
-if ARGV == ["-"]
-  `git checkout -`
-  exit
-end
-
 class Options
   DEFAULTS = {
     :count       => 9,
@@ -71,7 +65,7 @@ class Options
   end
 end
 
-class GIT
+class Git
   def initialize(options)
     @options = options
   end
@@ -102,53 +96,97 @@ class GIT
     `git checkout #{branch_name}`
   end
 
+  def self.checkout
+    `git checkout -`
+  end
+
   private
 
   attr_reader :options
 end
 
-branches = nil
-options = Options.new
-git = GIT.new(options)
-
-begin
-  options.parse!(ARGV)
-rescue OptionParser::InvalidOption => e
-  puts e.to_s
-  exit
-end
-
-case options.for(:order)
-when "modified"
-  branches = git.branches_by_modified_date
-else
-  branches = git.branches_by_checked_out_date
-end
-
-exit if branches.count == 0
-
-if options.for(:interactive)
-  branches.each_with_index do |name, index|
-    puts "#{index + 1}. #{name}"
+class Cli
+  def initialize(args)
+    @args = args
   end
 
-  print "Select a branch (1-#{branches.count},q) "
-  nro = $stdin.readline.strip
+  def run
+    # Treat `git switch -` as an alias of `git checkout -`
+    if args == ["-"]
+      Git.checkout and return
+    end
 
-  exit if nro == "q"
+    return if branches.count == 0
 
-  if /\A\d{1,2}\Z/ =~ nro
-    pos = nro.to_i - 1
+    print_branches
+    ask_branch if options.for(:interactive)
+  end
 
-    if 0 <= pos && pos < branches.count
-      git.checkout(branches[pos])
+  private
+
+  attr_reader :args
+
+  def options
+    return @options if defined? @options
+
+    @options = Options.new
+
+    begin
+      @options.parse!(args)
+    rescue OptionParser::InvalidOption => e
+      puts e.to_s
       exit
+    end
+
+    @options
+  end
+
+  def branches
+    return @branches if defined? @branches
+
+    case options.for(:order)
+    when "modified"
+      @branches = git.branches_by_modified_date
+    else
+      @branches = git.branches_by_checked_out_date
+    end
+
+    @branches
+  end
+
+  def git
+    @git ||= Git.new(options)
+  end
+
+  def print_branches
+    if options.for(:interactive)
+      branches.each_with_index do |name, index|
+        puts "#{index + 1}. #{name}"
+      end
+    else
+      branches.each do |name|
+        puts "#{name}"
+      end
     end
   end
 
-  puts "Invalid option '#{nro}'"
-else
-  branches.each do |name|
-    puts "#{name}"
+  def ask_branch
+    print "Select a branch (1-#{branches.count},q) "
+    nro = $stdin.readline.strip
+
+    exit if nro == "q"
+
+    if /\A\d{1,2}\Z/ =~ nro
+      pos = nro.to_i - 1
+
+      if 0 <= pos && pos < branches.count
+        git.checkout(branches[pos])
+        exit
+      end
+    end
+
+    puts "Invalid option '#{nro}'"
   end
 end
+
+Cli.new(ARGV).run
