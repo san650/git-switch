@@ -34,9 +34,13 @@ module TestHelpers
     `#{GIT} symbolic-ref HEAD | sed s,refs/heads/,,`.chomp
   end
 
+  def git(command)
+    `#{GIT} #{command}`.chomp
+  end
+
   def configure(key, value)
-    `#{GIT} config --local --unset-all #{key}`
-    `#{GIT} config --local --add #{key} #{value}`
+    git "config --local --unset-all #{key}"
+    git "config --local --add #{key} #{value}"
   end
 end
 
@@ -205,5 +209,13 @@ describe "git-switch" do
 
   it "yells about invalid options when invoking the command" do
     git_switch("--invalid-option").chomp.must_equal("invalid option: --invalid-option")
+  end
+
+  it "quits and doesn't print anything when branch count is zero" do
+    git "branch -D feature_one"
+    git "branch -D feature_two"
+    git "branch -D feature_three"
+
+    git("switch").must_equal ""
   end
 end
