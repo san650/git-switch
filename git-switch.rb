@@ -10,13 +10,13 @@ end
 branches = nil
 options = {
   :count       => 9,
-  :show        => :modified,
+  :order        => :modified,
   :interactive => true
 }
 
 # Read default configuration options
 if `git config --get switch.order`.chomp == "checked-out"
-  options[:show] = :checkout
+  options[:order] = :checkout
 end
 
 if (count = `git config --get switch.count`.chomp.to_i) > 0
@@ -28,11 +28,11 @@ begin
     opts.banner = "Usage: git switch [options]"
 
     opts.on("-o", "--checked-out", "Show recently checked out branches") do
-      options[:show] = :checkout
+      options[:order] = :checkout
     end
 
     opts.on("-m", "--modified", "Show last modified branches") do
-      options[:show] = :modified
+      options[:order] = :modified
     end
 
     opts.on("-i", "--non-interactive", "Don't use interactive mode") do
@@ -48,7 +48,7 @@ rescue OptionParser::InvalidOption => e
   exit
 end
 
-case options[:show]
+case options[:order]
 when :modified
   branches = `git for-each-ref --format="%(refname:short)" --sort='-authordate' refs/heads --count #{options[:count] + 1}`.split
   current_branch = `git rev-parse --abbrev-ref HEAD`.chomp
