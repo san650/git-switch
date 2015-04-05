@@ -32,6 +32,11 @@ module TestHelpers
   def current_branch
     `git --git-dir=#{GIT_DIR} symbolic-ref HEAD | sed s,refs/heads/,,`.chomp
   end
+
+  def configure(key, value)
+    `git --git-dir=#{GIT_DIR} config --local --unset-all #{key}`
+    `git --git-dir=#{GIT_DIR} config --local --add #{key} #{value}`
+  end
 end
 
 class String
@@ -62,6 +67,15 @@ describe "git-switch" do
 
   it "lists branches order by modified date using short argument" do
     git_switch("-m").must_equal <<-EOT.fix
+      1. feature_three
+      2. feature_two
+      3. feature_one
+      Select a branch (1-3,q)
+    EOT
+  end
+
+  it "lists branches order by modified date by default" do
+    git_switch.must_equal <<-EOT.fix
       1. feature_three
       2. feature_two
       3. feature_one
@@ -109,6 +123,30 @@ describe "git-switch" do
       feature_two
       feature_one
     EOT
+  end
+
+  describe "switch.order configuration" do
+    before do
+      configure "switch.order", "checked-out"
+    end
+
+    it "uses configuration option" do
+      git_switch.must_equal <<-EOT.fix
+        1. feature_two
+        2. feature_three
+        3. feature_one
+        Select a branch (1-3,q)
+      EOT
+    end
+
+    it "gives precedence to command line option" do
+      git_switch("-m").must_equal <<-EOT.fix
+        1. feature_three
+        2. feature_two
+        3. feature_one
+        Select a branch (1-3,q)
+      EOT
+    end
   end
 
   it "checks out the first branch" do
