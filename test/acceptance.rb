@@ -168,6 +168,12 @@ describe "git-switch" do
     current_branch.must_equal("feature_one")
   end
 
+  it "checks out previous branch" do
+    git_switch("-")
+
+    current_branch.must_equal("feature_two")
+  end
+
   it "yells about invalid options" do
     change_branch(4).must_match("Invalid option '4'")
     change_branch(0).must_match("Invalid option '0'")
