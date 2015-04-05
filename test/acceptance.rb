@@ -18,11 +18,29 @@ module TestHelpers
       io.read
     end
   end
+
+  def change_branch(number)
+    command = ["git", "--git-dir=#{GIT_DIR}", "switch"]
+
+    # FIXME silence sub process output
+    IO.popen(command.join(" "), "r+") do |io|
+      io.puts number
+      io.read
+    end
+  end
+
+  def current_branch
+    `git --git-dir=#{GIT_DIR} symbolic-ref HEAD | sed s,refs/heads/,,`.chomp
+  end
 end
 
 class String
   def fix
     gsub(/^\s+/, '').chomp + " "
+  end
+
+  def trim
+    gsub(/^\s+/, '')
   end
 end
 
@@ -91,5 +109,29 @@ describe "git-switch" do
       feature_two
       feature_one
     EOT
+  end
+
+  it "checks out the first branch" do
+    change_branch(1)
+
+    current_branch.must_equal("feature_three")
+  end
+
+  it "checks out the second branch" do
+    change_branch(2)
+
+    current_branch.must_equal("feature_two")
+  end
+
+  it "checks out the third branch" do
+    change_branch(3)
+
+    current_branch.must_equal("feature_one")
+  end
+
+  it "yells about invalid options" do
+    change_branch(4).must_match("Invalid option '4'")
+    change_branch(0).must_match("Invalid option '0'")
+    change_branch("r").must_match("Invalid option 'r'")
   end
 end
