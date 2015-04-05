@@ -5,13 +5,14 @@ module TestHelpers
   BASE_PATH = File.expand_path(File.dirname(__FILE__))
   FIXTURE_PATH = File.join(BASE_PATH, "..", "tmp", "fixture")
   GIT_DIR = File.join(FIXTURE_PATH, ".git")
+  GIT = "git --git-dir=#{GIT_DIR}"
 
   def generate_fixture
     `#{File.join(BASE_PATH, "fixture.sh")}`
   end
 
   def git_switch(*arguments)
-    command = ["git", "--git-dir=#{GIT_DIR}", "switch"] | arguments
+    command = [GIT, "switch"] | arguments
 
     IO.popen(command.join(" "), "r+") do |io|
       io.puts "q"
@@ -19,23 +20,23 @@ module TestHelpers
     end
   end
 
-  def change_branch(number)
-    command = ["git", "--git-dir=#{GIT_DIR}", "switch"]
+  def change_branch(option)
+    command = [GIT, "switch"]
 
     # FIXME silence sub process output
     IO.popen(command.join(" "), "r+") do |io|
-      io.puts number
+      io.puts option
       io.read
     end
   end
 
   def current_branch
-    `git --git-dir=#{GIT_DIR} symbolic-ref HEAD | sed s,refs/heads/,,`.chomp
+    `#{GIT} symbolic-ref HEAD | sed s,refs/heads/,,`.chomp
   end
 
   def configure(key, value)
-    `git --git-dir=#{GIT_DIR} config --local --unset-all #{key}`
-    `git --git-dir=#{GIT_DIR} config --local --add #{key} #{value}`
+    `#{GIT} config --local --unset-all #{key}`
+    `#{GIT} config --local --add #{key} #{value}`
   end
 end
 
