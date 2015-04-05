@@ -71,8 +71,45 @@ class Options
   end
 end
 
+class GIT
+  def initialize(options)
+    @options = options
+  end
+
+  def branches_by_modified_date
+    branches = `git for-each-ref --format="%(refname:short)" --sort='-authordate' refs/heads --count #{options.for(:count) + 1}`.split
+    current_branch = `git rev-parse --abbrev-ref HEAD`.chomp
+
+    if branches.include?(current_branch)
+      branches.delete(current_branch)
+    else
+      branches = branches.first(options.for(:count))
+    end
+
+    branches
+  end
+
+  def branches_by_checked_out_date
+    branches = `git reflog | grep "checkout: moving" | cut -d' ' -f8`.split.uniq.drop(1)
+
+    # Remove deleted branches from the result set
+    branches &= `git branch`.split
+
+    branches.take(options.for(:count))
+  end
+
+  def checkout(branch_name)
+    `git checkout #{branch_name}`
+  end
+
+  private
+
+  attr_reader :options
+end
+
 branches = nil
 options = Options.new
+git = GIT.new(options)
 
 begin
   options.parse!(ARGV)
@@ -83,20 +120,9 @@ end
 
 case options.for(:order)
 when "modified"
-  branches = `git for-each-ref --format="%(refname:short)" --sort='-authordate' refs/heads --count #{options.for(:count) + 1}`.split
-  current_branch = `git rev-parse --abbrev-ref HEAD`.chomp
-  if branches.include?(current_branch)
-    branches.delete(current_branch)
-  else
-    branches = branches.first(options.for(:count))
-  end
+  branches = git.branches_by_modified_date
 else
-  branches = `git reflog | grep "checkout: moving" | cut -d' ' -f8`.split.uniq.drop(1)
-
-  # Remove deleted branches from the result set
-  branches &= `git branch`.split
-
-  branches = branches.take(options.for(:count))
+  branches = git.branches_by_checked_out_date
 end
 
 exit if branches.count == 0
@@ -115,7 +141,7 @@ if options.for(:interactive)
     pos = nro.to_i - 1
 
     if 0 <= pos && pos < branches.count
-      `git checkout #{branches[pos]}`
+      git.checkout(branches[pos])
       exit
     end
   end
