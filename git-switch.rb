@@ -8,11 +8,12 @@ class Options
     :interactive => true
   }.freeze
 
-  def initialize
+  def initialize(args)
+    @args = args
     @options = {}
   end
 
-  def parse!(args)
+  def parse!
     OptionParser.new do |opts|
       opts.banner = "Usage: git switch [options]"
 
@@ -35,7 +36,10 @@ class Options
   end
 
   def for(key)
-    if key == :count
+    case key
+    when :dash
+      args == ["-"]
+    when :count
       value_for(key).to_i
     else
       value_for(key)
@@ -44,7 +48,7 @@ class Options
 
   private
 
-  attr_reader :options
+  attr_reader :options, :args
 
   def configuration(key)
     precense(`git config --get switch.#{key}`.chomp)
@@ -112,7 +116,7 @@ class Cli
 
   def run
     # Treat `git switch -` as an alias of `git checkout -`
-    if args == ["-"]
+    if options.for(:dash)
       Git.checkout and return
     end
 
@@ -129,10 +133,10 @@ class Cli
   def options
     return @options if defined? @options
 
-    @options = Options.new
+    @options = Options.new(args)
 
     begin
-      @options.parse!(args)
+      @options.parse!
     rescue OptionParser::InvalidOption => e
       puts e.to_s
       exit
