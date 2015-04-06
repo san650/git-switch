@@ -40,9 +40,7 @@ class Options
   end
 
   def interactive?
-    unless options[:interactive] == false
-      value_for(:interactive)
-    end
+    value_for(:interactive)
   end
 
   def dash?
@@ -58,17 +56,19 @@ class Options
   attr_reader :options, :args
 
   def configuration(key)
-    precense(`git config --get switch.#{key}`.chomp)
-  end
-
-  def precense(value)
-    unless value.length == 0
-      value
-    end
+    `git config --get switch.#{key}`.chomp
   end
 
   def value_for(key)
-    options[key] || configuration(key) || DEFAULTS[key]
+    if options[key].nil?
+      if configuration(key).nil?
+        DEFAULTS[key]
+      else
+        configuration(key)
+      end
+    else
+      options[key]
+    end
   end
 end
 
