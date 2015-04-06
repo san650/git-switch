@@ -35,15 +35,22 @@ class Options
     end.parse!(args)
   end
 
-  def for(key)
-    case key
-    when :dash
-      args == ["-"]
-    when :count
-      value_for(key).to_i
-    else
-      value_for(key)
+  def order_by_modified_date?
+    value_for(:order) == "modified"
+  end
+
+  def interactive?
+    unless options[:interactive] == false
+      value_for(:interactive)
     end
+  end
+
+  def dash?
+    args == ["-"]
+  end
+
+  def count
+    value_for(:count).to_i
   end
 
   private
@@ -61,27 +68,23 @@ class Options
   end
 
   def value_for(key)
-    if key == :interactive && options[key] == false
-      false
-    else
-      options[key] || configuration(key) || DEFAULTS[key]
-    end
+    options[key] || configuration(key) || DEFAULTS[key]
   end
 end
 
 class Git
   def initialize(options)
-    @options = options
+    @count = options.count
   end
 
   def branches_by_modified_date
-    branches = `git for-each-ref --format="%(refname:short)" --sort='-authordate' refs/heads --count #{options.for(:count) + 1}`.split
+    branches = `git for-each-ref --format="%(refname:short)" --sort='-authordate' refs/heads --count #{count + 1}`.split
     current_branch = `git rev-parse --abbrev-ref HEAD`.chomp
 
     if branches.include?(current_branch)
       branches.delete(current_branch)
     else
-      branches = branches.first(options.for(:count))
+      branches = branches.first(count)
     end
 
     branches
@@ -93,7 +96,7 @@ class Git
     # Remove deleted branches from the result set
     branches &= `git branch`.split
 
-    branches.take(options.for(:count))
+    branches.take(count)
   end
 
   def checkout(branch_name)
@@ -106,7 +109,7 @@ class Git
 
   private
 
-  attr_reader :options
+  attr_reader :count
 end
 
 class Cli
@@ -116,14 +119,14 @@ class Cli
 
   def run
     # Treat `git switch -` as an alias of `git checkout -`
-    if options.for(:dash)
+    if options.dash?
       Git.checkout and return
     end
 
     return if branches.count == 0
 
     print_branches
-    ask_branch if options.for(:interactive)
+    ask_branch if options.interactive?
   end
 
   private
@@ -148,8 +151,7 @@ class Cli
   def branches
     return @branches if defined? @branches
 
-    case options.for(:order)
-    when "modified"
+    if options.order_by_modified_date?
       @branches = git.branches_by_modified_date
     else
       @branches = git.branches_by_checked_out_date
@@ -163,7 +165,7 @@ class Cli
   end
 
   def print_branches
-    if options.for(:interactive)
+    if options.interactive?
       branches.each_with_index do |name, index|
         puts "#{index + 1}. #{name}"
       end
