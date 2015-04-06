@@ -150,6 +150,29 @@ describe "git-switch" do
     end
   end
 
+  describe "switch.count configuration" do
+    before do
+      configure "switch.count", "2"
+    end
+
+    it "uses configuration option" do
+      git_switch.must_equal <<-EOT.fix
+        1. feature_three
+        2. feature_two
+        Select a branch (1-2,q)
+      EOT
+    end
+
+    it "gives precedence to command line option" do
+      git_switch("-c 3").must_equal <<-EOT.fix
+        1. feature_three
+        2. feature_two
+        3. feature_one
+        Select a branch (1-3,q)
+      EOT
+    end
+  end
+
   it "checks out the first branch" do
     change_branch(1)
 
