@@ -41,17 +41,42 @@ git config --add switch.order checked-out
 
 ## Installation
 
-Clone git-switch repository
+You can install it on OS X using Homebrew
+
+```sh
+$ brew tap san650/git-switch
+$ brew install git-switch
+```
+
+Or you can clone the repository and link git-switch.rb to your bin directory
 
 ```sh
 $ git clone https://github.com/san650/git-switch.git
+$ cd git-switch
+$ ln -s $(pwd)/git-switch.rb /usr/bin/git-switch
 ```
 
-Link git-switch.rb to your `bin` directory
+## Update
+
+With Homebrew
+
+```sh
+$ brew upgrade git-switch
+```
+
+Or using the git repository
 
 ```sh
 $ cd git-switch
-$ ln -s $(pwd)/git-switch.rb /usr/bin/git-switch
+$ git fetch origin
+$ git checkout v0.2
+```
+
+## Uninstall
+
+```sh
+$ brew uninstall git-switch
+$ brew untap san650/git-switch
 ```
 
 ## Tests
