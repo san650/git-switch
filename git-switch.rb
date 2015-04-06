@@ -142,6 +142,8 @@ class Cli
       @options.parse!
     rescue OptionParser::InvalidOption => e
       puts e.to_s
+
+      # FIXME Don't exit the program abruptly
       exit
     end
 
@@ -180,14 +182,15 @@ class Cli
     print "Select a branch (1-#{branches.count},q) "
     nro = $stdin.readline.strip
 
-    exit if nro == "q"
+    return if nro == "q"
 
     if /\A\d{1,2}\Z/ =~ nro
       pos = nro.to_i - 1
 
       if 0 <= pos && pos < branches.count
         git.checkout(branches[pos])
-        exit
+
+        return
       end
     end
 
