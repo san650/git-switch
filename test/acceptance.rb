@@ -4,8 +4,10 @@ require "minitest/autorun"
 module TestHelpers
   BASE_PATH = File.expand_path(File.dirname(__FILE__))
   FIXTURE_PATH = File.join(BASE_PATH, "..", "tmp", "fixture")
+  PATH="PATH=\"#{FIXTURE_PATH}:$PATH\""
   GIT_DIR = File.join(FIXTURE_PATH, ".git")
-  GIT = "git --git-dir=#{GIT_DIR}"
+  GIT_CONFIG="GIT_CONFIG='#{GIT_DIR}/config'"
+  GIT = "#{PATH} #{GIT_CONFIG} git --git-dir=#{GIT_DIR}"
 
   def generate_fixture
     `#{File.join(BASE_PATH, "fixture.sh")}`
@@ -39,8 +41,8 @@ module TestHelpers
   end
 
   def configure(key, value)
-    git "config --local --unset-all #{key}"
-    git "config --local --add #{key} #{value}"
+    git "config --unset-all #{key}"
+    git "config --add #{key} #{value}"
   end
 end
 

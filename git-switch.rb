@@ -18,19 +18,19 @@ class Options
       opts.banner = "Usage: git switch [options]"
 
       opts.on("-o", "--checked-out", "Show recently checked out branches") do
-        @options[:order] = "checked-out"
+        options[:order] = "checked-out"
       end
 
       opts.on("-m", "--modified", "Show last modified branches") do
-        @options[:order] = "modified"
+        options[:order] = "modified"
       end
 
       opts.on("-i", "--non-interactive", "Don't use interactive mode") do
-        @options[:interactive] = false
+        options[:interactive] = false
       end
 
       opts.on("-c", "--count <number>", Integer, "Show number of branches") do |number|
-        @options[:count] = number
+        options[:count] = number
       end
     end.parse!(args)
   end
@@ -56,7 +56,9 @@ class Options
   attr_reader :options, :args
 
   def configuration(key)
-    `git config --get switch.#{key}`.chomp
+    value = `git config --get switch.#{key}`.chomp
+
+    return value unless value.empty?
   end
 
   def value_for(key)

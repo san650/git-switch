@@ -6,6 +6,8 @@ TMP=$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )/tmp/fixture
 # Recreate tmp folder
 rm -rf "$TMP"
 mkdir -p "$TMP"
+cp "$TMP/../../git-switch.rb" "$TMP/git-switch"
+chmod +x "$TMP/git-switch"
 
 cd "$TMP"
 
@@ -27,7 +29,3 @@ git checkout -b feature_three 2> /dev/null
 __commit 4
 git checkout feature_two 2> /dev/null
 git checkout master 2> /dev/null
-
-# Create base configuration
-git config --local --add switch.count 9
-git config --local --add switch.order modified
