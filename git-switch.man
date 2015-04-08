@@ -1,0 +1,34 @@
+.TH GIT-SWITCH 1 "7 April 15"
+.SH NAME
+git-switch \- List latests used branches
+.SH SYNOPSIS
+git-switch [ -o | -m ] [ -i ] [ -c count ]
+.SH DESCRIPTION
+Allows to checkout easily previously used branches. It can list branches by checked out date or by modified date, that is, branches with newest commits.
+.SH OPTIONS
+.TP
+.BR \-o ", " \-\-checked-out
+Show recently checked out branches. By default it lists by branch's modified date.
+.TP
+.BR \-m ", " \-\-modified
+Show last modified branches.
+.TP
+.BR \-i ", " \-\-no-interactive
+Don't use interactive mode. Interactive by default.
+.TP
+.BR \-c " " \fINUMBER\fR ", " \-\-count " " \fINUMBER\fR
+Show \fINUMBER\fP of branches.
+.SH CONFIGURATION
+See git-config(1) for core variables.
+.TP
+\fBswitch.order\fP
+If the value is \fIchecked-out\fP, it will show branches listed by recently checked out date. The default is \fImodified\fP.
+.TP
+\fBswitch.count\fP
+Number of branches to show. By default is nine.
+.SH "SEE ALSO"
+\fBgit-checkout(1)\fP
+.SH COPYRIGHT
+Copyright (c) 2014, 2015 Marcelo Dominguez, Santiago Ferreira
+
+git-switch is licensed under the MIT license.
