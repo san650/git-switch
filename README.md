@@ -1,6 +1,6 @@
 # git-switch
 
-List latests used branches
+Allows to checkout easily previously used branches. It can list branches by checked out date or by modified date, that is, branches with newest commits.
 
 ## Synopsis
 
@@ -29,14 +29,20 @@ of the branches in the list.
 | `-o` `--checked-out`    | Show recently checked out branches. By default it lists by branch's modified date. |
 | `-m` `--modified`       | Show last modified branches |
 | `-i` `--no-interactive` | Don't use interactive mode. Interactive by default. |
-| `-c` `--count <number>` | Show number of branches. |
+| `-c` `--count <number>` | Show number of branches. By default it shows nine.|
 
 ## Configurations
 
 You can configure git switch to do "checked-out" order by default
 
-```
+```sh
 git config --add switch.order checked-out
+```
+
+You can also configure the number of branches to show
+
+```sh
+git config --add switch.count 5
 ```
 
 ## Installation
