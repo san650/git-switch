@@ -1,11 +1,14 @@
 #!/usr/bin/env ruby
+GIT_SWITCH_VERSION="0.3.1"
+
 require "optparse"
 
 class Options
   DEFAULTS = {
     :count       => 9,
     :order       => "modified",
-    :interactive => true
+    :interactive => true,
+    :version     => false
   }.freeze
 
   def initialize(args)
@@ -16,6 +19,10 @@ class Options
   def parse!
     OptionParser.new do |opts|
       opts.banner = "Usage: git switch [options]"
+
+      opts.on("-v", "--version", "Show version number and quit") do
+        options[:version] = true
+      end
 
       opts.on("-o", "--checked-out", "Show recently checked out branches") do
         options[:order] = "checked-out"
@@ -49,6 +56,10 @@ class Options
 
   def count
     value_for(:count).to_i
+  end
+
+  def version?
+    value_for(:version)
   end
 
   private
@@ -122,7 +133,13 @@ class Cli
   def run
     # Treat `git switch -` as an alias of `git checkout -`
     if options.dash?
-      Git.checkout and return
+      Git.checkout
+      return
+    end
+
+    if options.version?
+      puts "git-switch version #{GIT_SWITCH_VERSION}"
+      return
     end
 
     return if branches.count == 0

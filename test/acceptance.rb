@@ -132,6 +132,10 @@ describe "git-switch" do
     EOT
   end
 
+  it "shows version" do
+    git_switch("--version").chomp.must_match /^git-switch version \d\.\d/
+  end
+
   describe "switch.order configuration" do
     before do
       configure "switch.order", "checked-out"
