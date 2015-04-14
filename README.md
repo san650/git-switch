@@ -30,6 +30,7 @@ of the branches in the list.
 | `-m` `--modified`       | Show last modified branches |
 | `-i` `--no-interactive` | Don't use interactive mode. Interactive by default. |
 | `-c` `--count <number>` | Show number of branches. By default it shows nine.|
+| `-v` `--version`        | Show version number and quit |
 
 ## Configurations
 

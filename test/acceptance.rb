@@ -47,12 +47,12 @@ module TestHelpers
 end
 
 class String
-  def fix
-    gsub(/^\s+/, '').chomp + " "
+  def undent
+    gsub(/^\s+/, '')
   end
 
-  def trim
-    gsub(/^\s+/, '')
+  def fix
+    undent.chomp + " "
   end
 end
 
@@ -125,11 +125,15 @@ describe "git-switch" do
   end
 
   it "lists branches and exit" do
-    git_switch("--non-interactive").must_equal <<-EOT.trim
+    git_switch("--non-interactive").must_equal <<-EOT.undent
       feature_three
       feature_two
       feature_one
     EOT
+  end
+
+  it "shows version" do
+    git_switch("--version").chomp.must_match /^git-switch version \d\.\d/
   end
 
   describe "switch.order configuration" do
