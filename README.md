@@ -1,6 +1,7 @@
 # git-switch
 
-Allows to checkout easily previously used branches. It can list branches by checked out date or by modified date, that is, branches with newest commits.
+Allows to checkout easily previously used branches. It can list branches by
+checked out date or by modified date, that is, branches with newest commits.
 
 ## Synopsis
 
@@ -15,12 +16,6 @@ git switch -
 ```
 
 to checkout previous branch
-
-## Description
-
-List latest used branches. By used we mean branches that were modified at some point.
-It also has an interactive mode which allows you to easily checkout one
-of the branches in the list.
 
 ## Options
 
