@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-GIT_SWITCH_VERSION="0.3.1"
+GIT_SWITCH_VERSION="1.0.0"
 
 require "optparse"
 

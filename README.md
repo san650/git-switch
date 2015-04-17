@@ -73,7 +73,7 @@ Or using the git repository
 ```sh
 $ cd git-switch
 $ git fetch origin
-$ git checkout v0.2
+$ git checkout v1.0.0
 ```
 
 ## Uninstall
