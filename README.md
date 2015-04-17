@@ -2,6 +2,8 @@
 
 Allows to checkout easily previously used branches. It can list branches by checked out date or by modified date, that is, branches with newest commits.
 
+![git-switch showcase](http://i.imgur.com/cJGhNDs.gif)
+
 ## Synopsis
 
 ```
