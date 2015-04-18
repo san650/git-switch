@@ -26,7 +26,7 @@ to checkout previous branch
 | `-o` `--checked-out`    | Show recently checked out branches. By default it lists by branch's modified date. |
 | `-m` `--modified`       | Show last modified branches |
 | `-i` `--no-interactive` | Don't use interactive mode. Interactive by default. |
-| `-c` `--count <number>` | Show number of branches. By default it shows nine.|
+| `-c` `--count=<number>` | Show number of branches. By default it shows nine.|
 | `-v` `--version`        | Show version number and quit |
 
 ## Configurations

@@ -36,7 +36,7 @@ class Options
         options[:interactive] = false
       end
 
-      opts.on("-c", "--count <number>", Integer, "Show number of branches") do |number|
+      opts.on("-c", "--count=<number>", Integer, "Show number of branches") do |number|
         options[:count] = number
       end
     end.parse!(args)
