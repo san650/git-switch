@@ -17,7 +17,7 @@ Show last modified branches.
 Don't use interactive mode. Interactive by default.
 .TP
 .BR \-c " " \fINUMBER\fR ", " \-\-count =\fINUMBER\fR
-Show \fINUMBER\fP of branches.
+Print first \fINUMBER\fP of branches. By default it prints nine.
 .TP
 .BR \-v ", " \--version
 Show version number and quit.

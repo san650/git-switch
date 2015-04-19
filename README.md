@@ -21,13 +21,13 @@ to checkout previous branch
 
 ## Options
 
-| Option                  | Description                     |
-|-------------------------|---------------------------------|
-| `-o` `--checked-out`    | Show recently checked out branches. By default it lists by branch's modified date. |
-| `-m` `--modified`       | Show last modified branches |
-| `-i` `--no-interactive` | Don't use interactive mode. Interactive by default. |
-| `-c` `--count=<number>` | Show number of branches. By default it shows nine.|
-| `-v` `--version`        | Show version number and quit |
+| Short| Long               | Description                     |
+|------|--------------------|---------------------------------|
+| `-o` | `--checked-out`    | Show recently checked out branches. By default it lists by branch's modified date. |
+| `-m` | `--modified`       | Show last modified branches |
+| `-i` | `--no-interactive` | Don't use interactive mode. Interactive by default. |
+| `-c NUMBER`| `--count=<NUMBER>` | Print first _NUMBER_ of branches. By default it prints nine.|
+| `-v` | `--version`        | Show version number and quit |
 
 ## Configurations
 
