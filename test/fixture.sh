@@ -6,7 +6,7 @@ TMP=$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )/tmp/fixture
 # Recreate tmp folder
 rm -rf "$TMP"
 mkdir -p "$TMP"
-cp "$TMP/../../bin/git-switch" "$TMP/git-switch"
+cp "$TMP/../../git-switch.rb" "$TMP/git-switch"
 chmod +x "$TMP/git-switch"
 
 cd "$TMP"

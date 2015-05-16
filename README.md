@@ -52,12 +52,12 @@ $ brew tap san650/git-switch
 $ brew install git-switch
 ```
 
-Or you can clone the repository and link git-switch to your bin directory
+Or you can clone the repository and link git-switch.rb to your bin directory
 
 ```sh
 $ git clone https://github.com/san650/git-switch.git
 $ cd git-switch
-$ ln -s $(pwd)/bin/git-switch /usr/bin/git-switch
+$ ln -s $(pwd)/git-switch.rb /usr/bin/git-switch
 ```
 
 ## Update
